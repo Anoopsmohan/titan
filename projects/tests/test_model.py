@@ -44,6 +44,9 @@ def create_project(user, name, slug, organisation):
 
 
 class TestModel(unittest.TestCase):
+    """
+    Test Model Schema integrity
+    """
 
     @classmethod
     def setUpClass(cls):
@@ -90,7 +93,7 @@ class TestModel(unittest.TestCase):
         organisation = Organisation(name="open lab", slug=slugify("open labs"))
         self.assertRaises(OperationError, organisation.save)
 
-    def test_0030_organisation_required_fields(self):
+    def test_0030_org_required_fields(self):
         """
         Test the required fields of Organisation collection.
         """
@@ -133,7 +136,7 @@ class TestModel(unittest.TestCase):
         team = Team(organisation=organisation, members=[self.user])
         self.assertRaises(ValidationError, team.save)
 
-    def test_0060_teams_under_organisation(self):
+    def test_0060_organisation_teams(self):
         """
         Testing the number of teams under the organisation
         """
@@ -202,7 +205,7 @@ class TestModel(unittest.TestCase):
         )
         project.save()
 
-    def test_0100_project_required_fields(self):
+    def test_0100_project_fields(self):
         """
         Test the fields required for the Project collection.
         """
@@ -264,7 +267,7 @@ class TestModel(unittest.TestCase):
         task_list.save()
         self.assertEqual(TaskList.objects().count(), 1)
 
-    def test_0120_tasklist_required_fields(self):
+    def test_0120_tasklist_fields(self):
         """
         Test the required fields of TaskList
         """
@@ -340,13 +343,6 @@ class TestModel(unittest.TestCase):
         )
         self.assertRaises(ValidationError, task.save)
 
-        # "assigned_to" is a required field
-        task = Task(
-            title="Create model desi", status ="resolved",
-            watchers=[self.user], task_list=task_list, follow_ups=[follow_up]
-        )
-        self.assertRaises(ValidationError, task.save)
-
         # "task_list" is a required field
         task = Task(
             title="Create model design", status ="resolved",
@@ -392,10 +388,9 @@ class TestModel(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        c = _get_connection()
-        c.drop_database('test_model')
+        connection = _get_connection()
+        connection.drop_database('test_model')
 
 
 if __name__ == '__main__':
     unittest.main()
-

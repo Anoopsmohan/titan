@@ -19,6 +19,9 @@ from monstor.utils.web import slugify
 
 
 class TestOrganisations(testing.AsyncHTTPTestCase):
+    """
+    Test organisations
+    """
 
     def get_app(self):
         options.options.database = 'test_titan'
@@ -33,6 +36,9 @@ class TestOrganisations(testing.AsyncHTTPTestCase):
         user.save(safe=True)
 
     def get_login_cookie(self):
+        """
+        Login and return the cookie required for making authenticated requests
+        """
         response = self.fetch(
             '/login', method="POST", follow_redirects=False,
             body=urlencode({
@@ -67,7 +73,7 @@ class TestOrganisations(testing.AsyncHTTPTestCase):
         )
         self.assertEqual(response.code, 302)
 
-    def test_0040_get_invalid_organisation(self):
+    def test_0040_invalid_organisation(self):
         """
         Try to GET and org which doesnt exist and look for 302 when not logged
         in and a 404 when logged in
@@ -170,7 +176,6 @@ class TestOrganisations(testing.AsyncHTTPTestCase):
         """
         Test for creating an organisation with empty form fields
         """
-        slug = slugify('new organisation')
         cookies = self.get_login_cookie()
         response = self.fetch(
             '/my-organisations/', method="POST", follow_redirects=False,

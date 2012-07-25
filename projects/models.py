@@ -2,13 +2,12 @@
 """
     models
 
-
     :copyright: (c) 2012 by Openlabs Technologies & Consulting (P) LTD
     :license: BSD, see LICENSE for more details.
 """
 from mongoengine import Document, EmbeddedDocument, ValidationError
 from mongoengine import (StringField, ReferenceField, ListField, FileField,
-    DateTimeField, EmbeddedDocumentField)
+    DateTimeField, EmbeddedDocumentField, SequenceField)
 from monstor.utils.i18n import _
 from monstor.contrib.auth.models import User as MonstorUser
 
@@ -39,6 +38,9 @@ class Organisation(Document):
 
     @property
     def teams(self):
+        """
+        Return list of teams under the organisation
+        """
         return Team.objects(organisation=self).all()
 
 
@@ -163,6 +165,12 @@ class FollowUp(EmbeddedDocument):
     #: http://mongoengine-odm.readthedocs.org/en/latest/guide/gridfs.html
     attachments = ListField(FileField(), verbose_name=_("Attachments"))
 
+    #: The name of the user, who has previously assigned this task
+    from_assignee = ReferenceField(User, verbose_name=_("From assignee"))
+
+    #: The name of the user, who has assigned this task
+    to_assignee = ReferenceField(User, verbose_name=_("To assignee"))
+
 
 class TaskList(Document):
     """
@@ -174,6 +182,9 @@ class TaskList(Document):
 
     #: The name of the project, under which this task list exist
     project = ReferenceField(Project, required=True, verbose_name=_("Project"))
+
+    #: Sequence id for each task list
+    sequence = SequenceField(unique=True)
 
 
 class Task(Document):
@@ -192,7 +203,7 @@ class Task(Document):
 
     #: The name of the user, who has assigned this task
     assigned_to = ReferenceField(
-        User, required=True, verbose_name=_("Assigned to")
+        User, verbose_name=_("Assigned to")
     )
 
     #: The list of users who will be sent an alert on being sent an email
@@ -201,6 +212,9 @@ class Task(Document):
     #: The reference to the task list
     task_list = ReferenceField(TaskList, required=True)
     follow_ups = ListField(EmbeddedDocumentField(FollowUp))
+
+    #: Sequence id for each task list
+    sequence = SequenceField(unique=True)
 
     @property
     def hours(self):

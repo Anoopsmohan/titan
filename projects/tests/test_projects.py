@@ -19,7 +19,10 @@ from titan.settings import SETTINGS
 from monstor.utils.web import slugify
 
 
-class TestOrganisations(testing.AsyncHTTPTestCase):
+class TestProjects(testing.AsyncHTTPTestCase):
+    """
+    Test projects
+    """
 
     def get_app(self):
         options.options.database = 'test_project'
@@ -28,7 +31,7 @@ class TestOrganisations(testing.AsyncHTTPTestCase):
         return application
 
     def setUp(self):
-        super(TestOrganisations, self).setUp()
+        super(TestProjects, self).setUp()
         user = User(name="Test User", email="test@example.com", active=True)
         user.set_password("password")
         user.save(safe=True)
@@ -59,7 +62,7 @@ class TestOrganisations(testing.AsyncHTTPTestCase):
 
         # User not logged in
         response = self.fetch(
-            '/%s/projects/' % organisation.slug,
+            '/%s/projects' % organisation.slug,
             method="GET",
             follow_redirects=False
         )
@@ -85,7 +88,7 @@ class TestOrganisations(testing.AsyncHTTPTestCase):
         )
         self.assertEqual(response.code, 404)
 
-    def test_0020_projectshandler_post_1(self):
+    def test_0020_projects_post_1(self):
         """
         Test post with logged in and project slug does not exists
         """
@@ -103,12 +106,14 @@ class TestOrganisations(testing.AsyncHTTPTestCase):
             '/%s/projects/' % organisation.slug,
             method="POST",
             follow_redirects=False,
-            headers ={'Cookie' : cookies},
-            body=urlencode({'name':'Titan', 'slug':'titan', 'team': str(team.id)}),
+            headers={'Cookie': cookies},
+            body=urlencode({
+                'name': 'Titan', 'slug': 'titan', 'team': team.id
+            }),
         )
         self.assertEqual(response.code, 302)
 
-    def test_0040_projectshandler_post_2(self):
+    def test_0040_projects_post_2(self):
         """
         post with logged in and Project slug already exist
         """
@@ -122,7 +127,7 @@ class TestOrganisations(testing.AsyncHTTPTestCase):
         )
         team.save()
         acl = AccessControlList(team=team, role="admin")
-        project =Project(
+        project = Project(
             name="titan", organisation=organisation, acl=[acl],
             slug=slugify('titan project')
         )
@@ -142,7 +147,7 @@ class TestOrganisations(testing.AsyncHTTPTestCase):
         )
 
 
-    def test_0050_slugverificationhandler_1(self):
+    def test_0050_slugverification_1(self):
         """
         Verify project slug which does not exists under current organisations
         """
@@ -167,7 +172,7 @@ class TestOrganisations(testing.AsyncHTTPTestCase):
         response = json.loads(response.body)
         self.assertEqual(response, True)
 
-    def test_0060_slugverificationhandler_2(self):
+    def test_0060_slugverification_2(self):
         """
         Verify project slug which already exists under current organisations
         """
@@ -181,7 +186,7 @@ class TestOrganisations(testing.AsyncHTTPTestCase):
         )
         team.save()
         acl = AccessControlList(team=team, role="admin")
-        project =Project(
+        project = Project(
             name="titan", organisation=organisation, acl=[acl],
             slug=slugify('titan project')
         )
@@ -212,7 +217,7 @@ class TestOrganisations(testing.AsyncHTTPTestCase):
         )
         team.save()
         acl = AccessControlList(team=team, role="admin")
-        project =Project(
+        project = Project(
             name="titan", organisation=organisation, acl=[acl],
             slug=slugify('titan project')
         )
