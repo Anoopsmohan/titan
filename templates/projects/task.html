@@ -7,8 +7,6 @@
       }  
 
 </script>
-
-
     		<section>
 				<!---Left navigation--->
 				<div class="container-fluid">
@@ -70,6 +68,29 @@
 														</div>
 
 
+                              <div class="accordion-group">
+																<div class="accordion-heading"> <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapsefive">Tasks</a> </div>
+																<div id="collapsefive" class="accordion-body collapse" style="height: 0px; ">
+																		<div class="accordion-inner">
+																				<ul class="nav nav-list">
+                                        {% if tasks %}
+                                            {% for task_s in tasks%}
+																		          <li><a href="{{ reverse_url('projects.task', organisation.slug, project.slug, tasklist.sequence, task_s.sequence) }}">{{task_s.title}}</a></li>
+                                            {% end %}
+                                        {% else %}
+                                          <li>No tasks are created</li>
+                                          {% end %}
+																				</ul>
+																		</div>
+																</div>
+														</div>
+
+
+
+
+                            <div class="accordion-group">
+                            <div class="accordion-heading"> <a class="accordion-toggle" href="{{ reverse_url('projects.task.new', organisation.slug, project.slug, tasklist.sequence)}}"> Add New Task</a> </div>
+                            </div>
 
 
                             <div class="accordion-group">
@@ -89,87 +110,69 @@
 								<div class="span9">
 										<div>
 												<ul class="breadcrumb">
-														<li class="active">Welcome to <b>{{organisation.name}}</b> <i>project:{{project.name}}</i></li>
+														<li class="active">Welcome to <b>{{organisation.name}}</b> <i>project:{{project.name}}</i><i>Task List: {{tasklist.name}}</i><i>Task:{{task.title}}</i></li>
 												</ul>
 										</div>										
 										<div class="row-fluid">
 												<div class="span12">
-														<button class="btn btn-inverse" data-toggle="modal" href="#myModal"> <span class="icn-plus icn-white"></span>Invite People</button>
-														<h4>All Tasklists and Tasks</h4>
-														<p>Manage all projects, tasklists and tasks.</p>
+
+														<h4>All Tasks under {{tasklist.name}}</h4>
 														
 														<!---Popup start--->
-														<div class="modal hide fade" id="myModal">
-																<div class="modal-header">
-																		<button class="close" data-dismiss="modal">×</button>
-																		<h3>Invite people to this project</h3>
-																</div>
-																<div class="modal-body">
-																		<!---Buttons And content--->
-                                    <p>Invite users to this project by typing email address</p>
-                                    <div class="row-fluid">
-                                      <div class="span3">&nbsp;</div>
-                                      <div class="span6">
-    
-                                    <form method="POST"  > 
-                                      {% module FormField(form.email, class_="form-field SiginupFormFealds", placeholder="E-mail") %}
-                                      <input type="submit" value="Invite" class="btn btn-inverse">
-                                      {% module xsrf_form_html() %}
-                                    </form>
 
-                                    </div>
-                                     <div class="span3">&nbsp;</div>
-                                     </div>
 
-																		<!---Button And content END--->
-																</div>
-																<div class="modal-footer"> <a href="#" class="btn" data-dismiss="modal">Close</a> </div>
-														</div>
 														<!---Popup END--->
 												</div>
 												<!---Spand-12 Start--->
 												</div>
 
-                  {%if tasklists %}
-                  {% for tasklist in tasklists.keys()%}
+
+
 										<div class="accordion-group-ud">
 												<div class="accordion-heading-ud"> 
-														<a class="accordion-toggle-ud" data-toggle="collapse" data-parent="#accordion2" href="#{{tasklist.id}}"> 
-														<!--<span class="icn-right"></span>  -->
-														<span class="box-number"></span>{{tasklist.name}} 
+														<a class="accordion-toggle-ud" data-toggle="collapse" data-parent="#accordion2" href="#{{task.id}}"> 
+														<span class="icn-right"></span><h2>{{task.title}}</h2>
+                            <div>&nbsp;</div>
+
+														<span class="box-number"></span>  
+                                <b>{{ task.title }}</b> on <b>{{tasklist.name}}</b> task list &nbsp;<span class="box-resolve">{{task.status}}</span>
+<p class="excerpt"><strong>Project:</strong> {{project.name}}</p>
 														</a> 
 												</div>
-												<div id="{{tasklist.id}}" class="accordion-body collapse" style="height: 0px; ">
-														<div class="accordion-inner-ud">
+                        <div id="{{task.id}}" class="accordion-body collapse" style="height: 0px; ">
+												<div class="accordion-inner-ud">
+                      {%if task.follow_ups%}
+                        {%for i in task.follow_ups%}
 																<!---User content Start--->
-                                {% if tasklists[tasklist]%}
-                                 <h4>Existing tasks in {{tasklist.name}}:</h4>
-                                {% for task in tasklists[tasklist]%}
-
-																  <div>
-                                      <p>
-                                        <a href="{{ reverse_url('projects.task', organisation.slug, project.slug, tasklist.sequence, task.sequence) }}">{{ task.title }}</a>
-                                      <p>
-																  </div>
-                                {% end %}
-                                {% else %}
-                                  <div>
-                                    <h4>No tasks are created yet!</h4>
-																		<p></p>
-																  </div>
-                                {% end %}
-
+                                 
+                                      <div>
+                                        <p>
+                                          status : <b><span class="box-resolve">{{i.to_status}}</span></b></br>
+                                          <b>{{current_user.name}}</b> &nbsp;Assigned to : <b>{{i.assigned_to.name}}</b></br>
+                                          {{i.message}}
+                                        </p>
+                                        <hr>
+                                        </div>
 																<!---User content End--->
+                          {%end%}
+                      {%end%}
 														</div>
 												</div>
 										</div>
-                    {%end%}
-                    {%else%}
-                    <h3>No Tasklists  are created yet</h3>
-                    {%end%}
 
-										
-										
+              <form method="POST", action="/{{organisation.slug}}/{{project.slug}}/{{tasklist.sequence}}/tasks/{{task.sequence}}/comment">
+              <div class="form-inline">
+                 {% module FormField(form.comment, class_="form-field SiginupFormFealds") %}
+                 {% module FormField(form.status, class_="form-field") %}
+                 {% module FormField(form.assigned_to, class_="form-field") %}
+                 <div class="actions ">
+                <input type="submit" value="Save"
+                    class="btn btn-inverse btn-small" data-loading-text="Please Wait...">
+                </div>
+                {% module xsrf_form_html() %}
+                </div>
+               </form>
+
 										<div>&nbsp;</div>
 										<div class="clear"></div>
 								</div>

@@ -1,0 +1,37 @@
+{% extends "../base.html"%}
+{% block title %}Sign In{% end %}
+{% block container %}
+		<section class="SignupForm">
+				<div class="container-fluid">
+						<div class="row-fluid">
+								<div class="span3">&nbsp;</div>
+								<div class="span6">
+										<form class="FormWell" action="{{reverse_url('contrib.auth.login')}}" method="POST" >
+												<h2>Log in to your Titan Account</h2></br>
+												<div>
+                          <fieldset class="whitecolor">
+                            {% module FormField(login_form.email, class_="form-field SiginupFormFealds", placeholder="Email") %}
+                            {% module FormField(login_form.password, class_="form-field SiginupFormFealds", placeholder="Password") %}
+                          </fieldset>
+													<div class="clear"></div>
+                          <div class="signin-btn">
+                          <input type="submit" class="btn btn-inverse" value="Submit"/> 
+                          </div>
+												</div>
+                      {% module xsrf_form_html() %}
+										</form>
+                    <div class="connect-buttons">
+                    <hr>
+                    <a href="/auth/google" class="btn" id="google_button">
+                      <span>Sign Up with <strong>Google</strong></span>
+                    </a>
+                    <a href="/auth/facebookgraph" class="btn" id="facebook_button">
+                      <span>Sign Up with <strong>Facebook</strong></span>
+                    </a>
+                </div>
+								</div>
+							<div class="span3">&nbsp;</div>
+						</div>
+				</div>
+		</section>
+{% end %}

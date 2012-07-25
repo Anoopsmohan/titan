@@ -1,0 +1,8 @@
+<div class="control-group form-field-bg{% if field.errors %} error{% end %}">
+  <div class="controls">
+    {% raw field(class_=class_, **kwargs) %}
+    {% for error in field.errors %}
+    <br/><span class="help-inline">{{ error }}</span>
+    {% end %}
+  </div>
+</div>

@@ -1,0 +1,73 @@
+<!-- <html>
+  <head>
+    <title>
+      Titan Application
+    </title>
+    <link rel="stylesheet" href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" />
+    <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="http://twitter.github.com/bootstrap/assets/js/bootstrap-typeahead.js"></script>
+    <script type="text/javascript" src="http://twitter.github.com/bootstrap/assets/js/bootstrap-dropdown.js"></script>
+  </head>
+  <body>
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container-fluid">
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </a>
+        <a class="brand" href="/home">Pixcloud</a>
+        <div class="nav-collapse">
+          <ul class="nav pull-right">
+
+            <a title="Sign up for Pixcloud" href="/registration"
+              class="btn btn-orange txt-white-color pull-left">
+              <i class="icon-user"></i>
+              Sign Up
+            </a>
+            <li class="divider-vertical"></li>
+             <li class="divider-vertical"></li>
+            <a class="btn" href="/login" title="Sign in to Pixcloud">
+              <i class="icon-user"></i>
+              Sign In
+            </a>
+
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div></br></br>   -->
+  {% extends "base.html" %}
+  {% block content %}
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span2">
+        <!--Sidebar content-->
+	      hello world
+	      <div class="well" style="padding: 8px 0;">
+        <ul class="nav nav-list">
+          <li class="nav-header">List header</li>
+          <li class="active"><a href="#"><i class="icon-white icon-home"></i> Home</a></li>
+          <li><a href="#"><i class="icon-book"></i> Library</a></li>
+          <li><a href="#"><i class="icon-pencil"></i> Applications</a></li>
+          <li class="nav-header">Another list header</li>
+          <li><a href="#"><i class="icon-user"></i> Profile</a></li>
+          <li><a href="#"><i class="icon-cog"></i> Settings</a></li>
+          <li class="divider"></li>
+          <li><a href="#"><i class="icon-flag"></i> Help</a></li>
+        </ul>
+        </div> <!-- /well -->
+      </div>
+      <div class="span10">
+        <!--Body content-->
+	      hello anoop
+      </div>
+    </div>
+    {% end%}
+<!--    <footer>
+      <center><p>&copy; Openlabs Technologies &amp; Consulting (P) Limited 2012</p> </center>
+    </footer>    -->
+  </div>
+  </body>
+</html>

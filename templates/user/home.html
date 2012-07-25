@@ -1,0 +1,255 @@
+{% extends "../base.html" %}
+{% block container%}
+  {% if not current_user %}
+  	<section><!---Left navigation--->
+		<div class="wrapper">
+				<div id="ei-slider" class="ei-slider">
+						<ul class="ei-slider-large">
+								<li> <img src="static/img/index-header/large/1.jpg" alt="image01" />
+										<div class="ei-title">
+												<h2>Creative</h2>
+												<h3>Duet</h3>
+										</div>
+								</li>
+								<li> <img src="static/img/index-header/large/2.jpg" alt="image02" />
+										<div class="ei-title">
+												<h2>Friendly</h2>
+												<h3>Devil</h3>
+										</div>
+								</li>
+								<li> <img src="static/img/index-header/large/3.jpg" alt="image03"/>
+										<div class="ei-title">
+												<h2>Tranquilent</h2>
+												<h3>Compatriot</h3>
+										</div>
+								</li>
+								<li> <img src="static/img/index-header/large/4.jpg" alt="image04"/>
+										<div class="ei-title">
+												<h2>Insecure</h2>
+												<h3>Hussler</h3>
+										</div>
+								</li>
+								<li> <img src="static/img/index-header/large/5.jpg" alt="image05"/>
+										<div class="ei-title">
+												<h2>Loving</h2>
+												<h3>Rebel</h3>
+										</div>
+								</li>
+								<li> <img src="static/img/index-header/large/6.jpg" alt="image06"/>
+										<div class="ei-title">
+												<h2>Passionate</h2>
+												<h3>Seeker</h3>
+										</div>
+								</li>
+								<li> <img src="static/img/index-header/large/7.jpg" alt="image07"/>
+										<div class="ei-title">
+												<h2>Crazy</h2>
+												<h3>Friend</h3>
+										</div>
+								</li>
+						</ul>
+						<!-- ei-slider-large -->
+						<ul class="ei-slider-thumbs">
+								<li class="ei-slider-element">Current</li>
+								<li><a href="#">Slide 1</a><img src="static/img/index-header/thumbs/1.jpg" alt="thumb01" /></li>
+								<li><a href="#">Slide 2</a><img src="static/img/index-header/thumbs/2.jpg" alt="thumb02" /></li>
+								<li><a href="#">Slide 3</a><img src="static/img/index-header/thumbs/3.jpg" alt="thumb03" /></li>
+								<li><a href="#">Slide 4</a><img src="static/img/index-header/thumbs/4.jpg" alt="thumb04" /></li>
+								<li><a href="#">Slide 5</a><img src="static/img/index-header/thumbs/5.jpg" alt="thumb05" /></li>
+								<li><a href="#">Slide 6</a><img src="static/img/index-header/thumbs/6.jpg" alt="thumb06" /></li>
+								<li><a href="#">Slide 7</a><img src="static/img/index-header/thumbs/7.jpg" alt="thumb07" /></li>
+						</ul>
+						<!-- ei-slider-thumbs -->
+				</div>
+				<!-- ei-slider -->				
+		</div>
+		<!-- wrapper -->
+    <script type="text/javascript" src="static/js/header-slider/jquery.min.js"></script>
+    <script type="text/javascript" src="static/js/header-slider/jquery.eislideshow.js"></script>
+    <script type="text/javascript" src="static/js/header-slider/jquery.easing.1.3.js"></script>
+    <script type="text/javascript">
+    $(function() {
+      $('#ei-slider').eislideshow({
+					easing		: 'easeOutExpo',
+					titleeasing	: 'easeOutExpo',
+					titlespeed	: 1200
+      });
+    });
+    </script>
+  </section>
+  {% else %}
+    		<section>
+				<!---Left navigation--->
+				<div class="container-fluid">
+						<div class="row-fluid">
+								<div class="span3">
+										<div class="main-left-part-bg">
+
+
+
+
+												<div class="accordion" id="accordion2">
+														<div class="accordion-group">
+																<div class="accordion-heading"> <a class="accordion-toggle"  href="{{reverse_url('projects.welcome')}}"> Getting Started</a> </div>
+														</div>
+                             {% if organisations %}
+														<div class="accordion-group">
+																<div class="accordion-heading"> <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">Organizations</a> </div>
+																<div id="collapseTwo" class="accordion-body collapse" style="height: 0px; ">
+																		<div class="accordion-inner">
+																				<ul class="nav nav-list">
+                                            {% for org in organisations%}
+																		          <li><a href="{{ reverse_url('projects.organisation', org.slug) }}">{{org.name}}</a></li>
+                                            {% end %}
+
+																				</ul>
+																		</div>
+																</div>
+														</div>
+
+                            {%end%}
+                            <div class="accordion-group">
+                            <div class="accordion-heading"> <a class="accordion-toggle"  href="{{ reverse_url('projects.organisations') }}"> Create Organisation</a> </div>
+                            </div>
+                            <div class="accordion-group">
+                            <div class="accordion-heading"> <a class="accordion-toggle"  href="{{ reverse_url('projects.organisations') }}"> Manage Organisations</a> </div>
+                            </div>
+												</div>
+										</div>
+										<!---main-left-part-bg--->
+								</div>
+								<!---SPAN-3 END--->
+								<div class="span9">
+										<div>
+												<ul class="breadcrumb">
+														<li class="active">Welcome to Titan</li>
+												</ul>
+										</div>
+                   {% if organisations %} 
+                    <div class="container-fluid">
+											<div class="row-fluid">
+												<div class="span3">&nbsp;</div>
+												<div class="span6">
+													<div class="well-2">
+															<h2>Your recent activities</h2>
+															<p>Here you will find a list of all the activity within your organisations</p>
+														</div>
+												</div>
+                        <div class="span3">&nbsp;</div>
+											</div>
+										</div>
+
+                    {% for organisation in organisations.keys()%}
+										<div class="accordion-group-ud">
+												<div class="accordion-heading-ud"> 
+														<a class="accordion-toggle-ud" data-toggle="collapse" data-parent="#accordion2" href="#{{organisation.id}}"> 
+														<!--<span class="icn-right"></span>  -->
+														<span class="box-number"></span>{{organisation.name}} 
+														</a> 
+												</div>
+												<div id="{{organisation.id}}" class="accordion-body collapse" style="height: 0px; ">
+														<div class="accordion-inner-ud">
+																<!---User content Start--->
+                                {% if organisations[organisation]%}
+                                 <h4>Projects you are participated in {{organisation.name}}:</h4>
+                                {% for project in organisations[organisation]%}
+
+																  <div>
+                                      <p>
+                                        <a href="{{ reverse_url('projects.project', organisation.slug, project.slug) }}">{{ project.name }}</a>
+                                      <p>
+																  </div>
+                                {% end %}
+                                {% else %}
+                                  <div>
+                                    <h4>No projects are created yet!</h4>
+																		<p></p>
+																  </div>
+                                {% end %}
+
+																<!---User content End--->
+														</div>
+												</div>
+										</div>
+                    {%end%}
+										<div>&nbsp;</div>
+										<div class="clear"></div>
+                    {% else %}
+
+                    <section>
+										<div id="myCarousel" class="carousel slide">
+												<div class="carousel-inner">
+														<div class="item  active">
+																<div class="container-fluid">
+																<h1>WELCOME TO TITAN!</h1>
+																	<div class="row-fluid">																			
+																			<div class="span6">
+																				<p><strong>A productivity platform that works like you do: virtual, mobile and social.
+																							Teambox is a secure project collaboration platform that streamlines social </strong><br>
+																							communication in a productive, task-driven environment.
+																							Take the tour to find out you can leverage your Teambox experience so that your work feel 
+																							less like work, and more like what you love to do.</p><br><br>
+																							<p>
+																							communication in a productive, task-driven environment.
+																							Take the tour to find out you can leverage your Teambox experience so that your work feel 
+																							less like work, and more like what you love to do.</p>
+																			</div>
+																			<div class="span6"><img src="static/img/header-2/04_img_01.png"></div>
+																	</div>
+																</div>																
+														</div>
+														
+														
+														<div class="item">
+																<div class="container-fluid">
+																<h1>THE TITAN ENVIRONMENT</h1>
+																	<div class="row-fluid">																			
+																			<div class="span6">
+																				<p><strong>A productivity platform that works like you do: virtual, mobile and social.
+																							Teambox is a secure project collaboration platform that streamlines social </strong><br>
+																							communication in a productive, task-driven environment.
+																							Take the tour to find out you can leverage your Teambox experience so that your work feel 
+																							less like work, and more like what you love to do.</p><br><br>
+																							<p>
+																							communication in a productive, task-driven environment.
+																							Take the tour to find out you can leverage your Teambox experience so that your work feel 
+																							less like work, and more like what you love to do.</p>
+																			</div>
+																			<div class="span6"><img src="static/img/header-2/1.jpg"></div>
+																	</div>
+																</div>	
+														</div>
+														
+														
+														<div class="item"> 
+															<div class="container-fluid">
+																<h1>ORGANIZATIONS</h1>
+																	<div class="row-fluid">																			
+																			<div class="span6">
+																				<p><strong>A productivity platform that works like you do: virtual, mobile and social.
+																							Teambox is a secure project collaboration platform that streamlines social </strong><br>
+																							communication in a productive, task-driven environment.
+																							Take the tour to find out you can leverage your Teambox experience so that your work feel 
+																							less like work, and more like what you love to do.</p><br><br>
+																							<p>
+																							communication in a productive, task-driven environment.
+																							Take the tour to find out you can leverage your Teambox experience so that your work feel 
+																							less like work, and more like what you love to do.</p>
+																			</div>
+																			<div class="span6"><img src="static/img/header-2/05_img_01.jpg"></div>
+																	</div>
+																</div>	
+														</div>
+												</div>
+												<a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a> <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a> </div>
+										<div class="clear"></div>
+		              </section>
+
+                    {% end %}
+								</div>
+								<!---SPAN-9 END--->
+						</div>
+				</div>
+		</section>
+  {% end %}
+{% end %}

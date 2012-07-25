@@ -1,1 +1,220 @@
+{% extends "../base.html" %}
+{% block container%}
+<script type="text/javascript">
+      function getCookie(name) {
+        var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
+        return r ? r[1] : undefined;
+      }  
+      $(document).ready(function(){
+        $("input#submit").click(function(){
+          var email=$("input#email").val()
+          if (email.length <1){
+            document.getElementById("foo").innerHTML = "Field is missing"
+            }
 
+          var xsrf = getCookie("_xsrf");
+          $.ajax({
+              url: "{{ reverse_url('projects.organisations.invitation', organisation.slug )}}",
+              data:{'email' : email, '_xsrf' : xsrf },
+              type: 'post',
+              success : function(data) {
+                document.getElementById("foo").innerHTML = data
+              }
+          });
+        });
+
+        $("input#submit_2").click(function(){
+          var email=$("input#email_id").val()
+          if (email.length <1){
+            document.getElementById("foo_2").innerHTML = "Field is missing"
+            }
+          var xsrf = getCookie("_xsrf");
+          $.ajax({
+              url: "{{ reverse_url('projects.organisations.remove', organisation.slug )}}",
+              data:{'email' : email, '_xsrf' : xsrf },
+              type: 'post',
+              success : function(data) {
+                document.getElementById("foo_2").innerHTML = data
+              }
+          });
+        });
+
+
+      });
+</script>
+
+
+    		<section>
+				<!---Left navigation--->
+				<div class="container-fluid">
+						<div class="row-fluid">
+								<div class="span3">
+										<div class="main-left-part-bg">
+												<div class="accordion" id="accordion2">
+														<div class="accordion-group">
+																<div class="accordion-heading"> <a class="accordion-toggle"  href="{{reverse_url('projects.welcome')}}"> Getting Started</a> </div>
+														</div>
+                             {% if organisations %}
+														<div class="accordion-group">
+																<div class="accordion-heading"> <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">Organizations</a> </div>
+																<div id="collapseTwo" class="accordion-body collapse" style="height: 0px; ">
+																		<div class="accordion-inner">
+																				<ul class="nav nav-list">
+                                            {% for org in organisations%}
+																		          <li><a href="{{ reverse_url('projects.organisation', org.slug) }}">{{org.name}}</a></li>
+                                            {% end %}
+
+																				</ul>
+																		</div>
+																</div>
+														</div>
+                            {% end %}
+														<div class="accordion-group">
+																<div class="accordion-heading"> <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">Projects</a> </div>
+																<div id="collapseThree" class="accordion-body collapse" style="height: 0px; ">
+																		<div class="accordion-inner">
+																				<ul class="nav nav-list">
+                                        {% if projects %}
+                                            {% for project in projects%}
+																		          <li><a href="{{ reverse_url('projects.project', organisation.slug, project.slug) }}">{{project.name}}</a></li>
+                                            {% end %}
+                                        {% else %}
+                                          <li>No projects are created</li>
+                                          {% end %}
+																				</ul>
+																		</div>
+																</div>
+														</div>
+
+
+                          <div class="accordion-group">
+                            <div class="accordion-heading"> <a class="accordion-toggle"  href="{{ reverse_url('projects.projects', organisation.slug) }}"> Create Project</a> </div>
+</div>
+                            <div class="accordion-group">
+                            <div class="accordion-heading"> <a class="accordion-toggle"  href="{{ reverse_url('projects.organisations') }}"> Create Organisation</a> </div>
+                            </div>
+                            <div class="accordion-group">
+                            <div class="accordion-heading"> <a class="accordion-toggle"  href="{{ reverse_url('projects.organisations') }}"> Manage Organisations</a> </div>
+                            </div>
+												</div>
+										</div>
+										<!---main-left-part-bg--->
+								</div>
+								<!---SPAN-3 END--->
+								<div class="span9">
+										<div>
+												<ul class="breadcrumb">
+														<li class="active">Welcome to <b>{{organisation.name}}</b></li>
+												</ul>
+										</div>										
+										<div class="row-fluid">
+												<div class="span12">
+														<button class="btn btn-inverse" data-toggle="modal" href="#myModal1"> <span class="icn-plus icn-white"></span> Invite people</button>
+														<button class="btn btn-inverse" data-toggle="modal" href="#myModal_2"> <span class="icn-plus icn-white"></span> Remove people</button>
+														<button class="btn btn-inverse" data-toggle="modal" href="#myModal_3"> <span class="icn-plus icn-white"></span> Add Team</button>
+														<h4>PROJECTS YOU ARE INVOLVED</h4>
+														<p>Manage all projects, tasklists and tasks</p>
+														
+
+
+                            <div id="myModal1" class="modal hide fade">
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h3>Invite people to this organisation</h3>
+                              </div>
+                              <div class="modal-body">
+                                <p> Invite users to the 'Administrators' team of this organisation by typing email address</p></br>
+                                <font size=3 color="red"><span id="foo"></span></font>
+                                {% module FormField(invite_form.email, class_="form-field SiginupFormFealds", placeholder="Email") %}                  
+                                <div class="actions ">
+                                  <input type="submit" value="Create" id="submit" name="submit"
+                                      class="btn btn-inverse" >
+                                </div>
+                              </div>
+                              <div class="modal-footer">
+                                <a href="#" class="btn" data-dismiss="modal" >Close</a>
+                              </div>
+                            </div>
+
+                            <div id="myModal_2" class="modal hide fade">
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h3>Remove user from  organisation</h3>
+                              </div>
+                              <div class="modal-body">
+                                <p> Remove user from the organisation by typing email address</p></br>
+                                <font size=3 color="red"><span id="foo_2"></span></font>
+                                {% module FormField(remove_form.email_id, class_="form-field SiginupFormFealds", placeholder="Email") %}                  
+                                <div class="actions ">
+                                  <input type="submit" value="Remove" id="submit_2" name="submit_2"
+                                  class="btn btn-inverse" >
+                                </div>
+                              </div>
+                              <div class="modal-footer">
+                                <a href="#" class="btn" data-dismiss="modal" >Close</a>
+                              </div>
+                            </div>
+
+                            <div id="myModal_3" class="modal hide fade">
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h3>Create New Team</h3>
+                              </div>
+                              <div class="modal-body">
+                                  <form method="POST"> 
+                                      {% module FormField(form.name, class_="form-field SiginupFormFealds", placeholder="Name") %}
+                                      <div class="actions ">
+                                        <input type="submit" value="Create" class="btn btn-inverse">
+                                      </div>
+                                        {% module xsrf_form_html() %}
+                                  </form>               
+                              </div>
+                              <div class="modal-footer">
+                                <a href="#" class="btn" data-dismiss="modal" >Close</a>
+                              </div>
+                            </div>
+
+
+
+												</div>
+												<!---Spand-12 Start--->
+												</div>
+                        {% if projects %}
+                        {% for project in projects.keys()%}
+										    <div class="accordion-group-ud">
+												  <div class="accordion-heading-ud"> 
+														<a class="accordion-toggle-ud" data-toggle="collapse" data-parent="#accordion2" href="#{{project.id}}"> 
+														<span class="box-number"></span>{{project.name}} 
+														</a> 
+												  </div>
+												  <div id="{{project.id}}" class="accordion-body collapse" style="height: 0px; ">
+														<div class="accordion-inner-ud">
+																<!---User content Start--->
+                                <h4>Task lists</h4>
+                                {% if projects[project]%}
+                                  {%for tasklist in projects[project]%}
+																  <div> 
+																	  	<p><a href="{{ reverse_url('projects.tasklist', organisation.slug, project.slug, tasklist.sequence) }}">{{tasklist.name}}</a></p>
+																  </div>
+                                  {%end%}
+                                {%else%}
+                                  <div> 
+																	  	<p>No tasklists are created yet</p>
+																  </div>
+                                {%end%}
+																<!---User content End--->
+														</div>
+												</div>
+										</div>
+                    {%end%}
+                    {%else%}
+                    <h3>No projects are created yet</h3>
+                    {%end%}
+										<div>&nbsp;</div>
+										<div class="clear"></div>
+								</div>
+								<!---SPAN-9 END--->
+              </div>
+				</div>
+		</section>
+  {% end %}

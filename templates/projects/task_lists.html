@@ -5,28 +5,8 @@
         var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
         return r ? r[1] : undefined;
       }  
-      $(document).ready(function(){
-        $("input#name").keyup(function() {
-          var org = $("input#slug").val();
-          var xsrf = getCookie("_xsrf");
-          $.ajax({
-            url : "{{ reverse_url('projects.project.slug-check', organisation.slug )}}",
-            data :{'project_slug' : $("input#slug").val(), '_xsrf' : xsrf },
-            type: 'post',
-            success: function(data) {
-            if( data == 'true') {
-              document.getElementById("foo").innerHTML = "Available"
-            } else {
-              document.getElementById("foo").innerHTML = "Existing"
-            }
-          },
-        });
-      });
 
-      });
 </script>
-
-
     		<section>
 				<!---Left navigation--->
 				<div class="container-fluid">
@@ -59,8 +39,8 @@
 																		<div class="accordion-inner">
 																				<ul class="nav nav-list">
                                         {% if projects %}
-                                            {% for project in projects%}
-																		          <li><a href="{{ reverse_url('projects.project', organisation.slug, project.slug) }}">{{project.name}}</a></li>
+                                            {% for projet in projects%}
+																		          <li><a href="{{ reverse_url('projects.project', organisation.slug, projet.slug) }}">{{projet.name}}</a></li>
                                             {% end %}
                                         {% else %}
                                           <li>No projects are created</li>
@@ -70,7 +50,29 @@
 																</div>
 														</div>
 
+                              <div class="accordion-group">
+																<div class="accordion-heading"> <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapsefour">Tasklists</a> </div>
+																<div id="collapsefour" class="accordion-body collapse" style="height: 0px; ">
+																		<div class="accordion-inner">
+																				<ul class="nav nav-list">
+                                        {% if tasklists %}
+                                            {% for tasklist in tasklists%}
+																		          <li><a href="{{ reverse_url('projects.tasklist', organisation.slug, project.slug, tasklist.sequence) }}">{{tasklist.name}}</a></li>
+                                            {% end %}
+                                        {% else %}
+                                          <li>No tasklists are created</li>
+                                          {% end %}
+																				</ul>
+																		</div>
+																</div>
+														</div>
 
+
+
+
+                            <div class="accordion-group">
+                            <div class="accordion-heading"> <a class="accordion-toggle" href="{{ reverse_url('projects.tasklists', organisation.slug, project.slug)}}"> Add Task List</a> </div>
+                            </div>
 
                             <div class="accordion-group">
                             <div class="accordion-heading"> <a class="accordion-toggle"  href="{{ reverse_url('projects.organisations') }}"> Create Organisation</a> </div>
@@ -85,35 +87,34 @@
 								<div class="span9">
 										<div>
 												<ul class="breadcrumb">
-														<li class="active">Welcome to {{organisation.name}}</li>
+														<li class="active">Welcome to <b>{{organisation.name}}</b> <i>project:{{project.name}}</i></li>
 												</ul>
 										</div>										
 										<div class="row-fluid">
 												<div class="span12">
-														<button class="btn btn-inverse" data-toggle="modal" href="#myModal"> <span class="icn-plus icn-white"></span> New Project</button>
-														<h4>Projects you are participated</h4>
+														<button class="btn btn-inverse" data-toggle="modal" href="#myModal"> <span class="icn-plus icn-white"></span>Add new Task List</button>
+														<h4>All Tasklists and Tasks</h4>
 														<p>Manage all projects, tasklists and tasks.</p>
 														
 														<!---Popup start--->
 														<div class="modal hide fade" id="myModal">
 																<div class="modal-header">
 																		<button class="close" data-dismiss="modal">×</button>
-																		<h3>New Project</h3>
+																		<h3>Add new Task List</h3>
 																</div>
 																<div class="modal-body">
 																		<!---Buttons And content--->
-                                    <p>All your projects and teammates will be grouped inside an Organization. You can create more later.</p>
+                                    <p>Invite users to this project by typing email address</p>
                                     <div class="row-fluid">
                                       <div class="span3">&nbsp;</div>
                                       <div class="span6">
     
-                                    <form action="{{reverse_url('projects.projects', organisation.slug )}}" method="POST"  > 
-                                      {% module FormField(form.name, class_="form-field SiginupFormFealds", placeholder="Project Name") %}
-                                      <font size=3 color="red"><span id="foo"></span></font>
-                                      {% module FormField(form.slug, class_="slug SiginupFormFealds", placeholder="Slug") %}
-                                      {% module FormField(form.team, class_="form-field") %}
-                                      <input type="submit" value="Create Project" class="btn btn-inverse">
-                                      {% module xsrf_form_html() %}
+                                    <p> A task lists defines a milestone for your project. Inside a task list you can create Tasks and assign them to people.</p></br>
+                                    <b>Choose a name for this Task List</b>&nbsp;&nbsp;<i> eg. prepare a documentation</i></br></br>
+                                    <form action="{{reverse_url('projects.tasklists', organisation.slug, project.slug)}}" method="POST">
+                                        {% module FormField(form.name, class_="form-field SiginupFormFealds", placeholder="tasklist Name") %}
+                                        <input type="submit" value="Create" class="btn btn-inverse">
+                                        {% module xsrf_form_html() %}
                                     </form>
 
                                     </div>
@@ -129,31 +130,32 @@
 												<!---Spand-12 Start--->
 												</div>
 
-                  {%if projects %}
-                  {% for project in projects.keys()%}
+
+
+                  {%if tasklists %}
+                  {% for tasklist in tasklists.keys()%}
 										<div class="accordion-group-ud">
 												<div class="accordion-heading-ud"> 
-														<a class="accordion-toggle-ud" data-toggle="collapse" data-parent="#accordion2" href="#{{project.id}}"> 
+														<a class="accordion-toggle-ud" data-toggle="collapse" data-parent="#accordion2" href="#{{tasklist.id}}"> 
 														<!--<span class="icn-right"></span>  -->
-														<span class="box-number"></span>{{project.name}} 
+														<span class="box-number"></span>{{tasklist.name}} 
 														</a> 
 												</div>
-												<div id="{{project.id}}" class="accordion-body collapse" style="height: 0px; ">
+												<div id="{{tasklist.id}}" class="accordion-body collapse" style="height: 0px; ">
 														<div class="accordion-inner-ud">
 																<!---User content Start--->
-                                {% if projects[project]%}
-                                 <h4>Existing tasklists in {{project.name}}:</h4>
-                                {% for tasklist in projects[project]%}
+                                {% if tasklists[tasklist]%}
+                                {% for task in tasklists[tasklist]%}
 
 																  <div>
                                       <p>
-                                        <a href="{{ reverse_url('projects.tasklist', organisation.slug, project.slug, tasklist.sequence) }}">{{ tasklist.name }}</a>
+                                        <a href="{{ reverse_url('projects.task', organisation.slug, project.slug, tasklist.sequence, task.sequence) }}">{{ task.title }}</a>
                                       <p>
 																  </div>
                                 {% end %}
                                 {% else %}
                                   <div>
-                                    <h4>No tasklists are created yet!</h4>
+                                    <h4>No Tasks are created yet!</h4>
 																		<p></p>
 																  </div>
                                 {% end %}
@@ -164,8 +166,14 @@
 										</div>
                     {%end%}
                     {%else%}
-                    <h3>No projects are created yet</h3>
+                    <h3>No Tasklists are created yet</h3>
                     {%end%}
+
+
+
+										
+										
+										
 										<div>&nbsp;</div>
 										<div class="clear"></div>
 								</div>
@@ -174,5 +182,4 @@
 				</div>
 		</section>
   {% end %}
-
 

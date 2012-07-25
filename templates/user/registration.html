@@ -1,0 +1,37 @@
+{% extends "../base.html"%}
+{% block title %}Registration{% end %}
+{% block container %}
+		<section class="SignupForm">
+				<div class="container-fluid">
+						<div class="row-fluid">
+								<div class="span3">&nbsp;</div>
+								<div class="span6">
+										<form class="FormWell" action="{{reverse_url('contrib.auth.registration')}}" method="POST" >
+												<h2>Create An Account</h2>
+												<h3>Build a better space for your team in under 60 seconds</h3>
+                      <div>
+                          <fieldset class="whitecolor">
+                            {% module FormField(registration_form.name, class_="form-field SiginupFormFealds", placeholder="Name") %}
+                            {% module FormField(registration_form.company_name, class_="form-field SiginupFormFealds", placeholder="Company name") %}
+                            {% module FormField(registration_form.email, class_="form-field SiginupFormFealds", placeholder="Email") %}
+                            {% module FormField(registration_form.password, class_="form-field SiginupFormFealds", placeholder="Password") %}
+                            {% module FormField(registration_form.confirm_password, class_="form-field SiginupFormFealds", placeholder="Confirm password") %}
+                          </fieldset>
+                          <div class="clear"></div>
+                          <div class="registration-btn">
+                          <input type="submit" value="Register Me" class="btn btn-inverse"/>
+                          </div>
+												</div>
+                      {% module xsrf_form_html() %}
+										</form>
+                  <div class="connect-buttons">
+												<hr>
+												<a href="/auth/google" class="btn" id="google_button"> <span>Sign in with <strong>Google</strong></span> </a>											
+												<a href="/auth/facebookgraph" class="btn" id="facebook_button"> <span>Sign in with <strong>Facebook</strong></span> </a> </div>
+								  </div>                
+								<div class="span3">&nbsp;</div>
+              </div>
+						</div>
+				</div>
+		</section>
+{% end %}

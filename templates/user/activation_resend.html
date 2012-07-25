@@ -1,0 +1,28 @@
+{% extends "../base.html"%}
+{% block title %}Activation resend{% end %}
+{% block container %}
+		<section class="SignupForm">
+				<div class="container-fluid">
+						<div class="row-fluid">
+								<div class="span3">&nbsp;</div>
+								<div class="span6">
+										<form class="FormWell" action="{{reverse_url('contrib.auth.activation_resend')}}" method="POST" class="form form-horizontal">
+												<h3>Activation key resend</h3>
+												<div>
+                          <fieldset>
+                            {% module FormField(form.email, class_="form-field SiginupFormFealds", placeholder="Email") %}
+                          </fieldset>
+													<div class="clear"></div>
+                          <div class="registration-btn">
+                          <input type="submit" value="Resend" class="btn btn-inverse btn-large">
+                          </div>
+												</div>
+                      {% module xsrf_form_html() %}                        
+										</form>
+								</div>
+								<div class="span3">&nbsp;</div>
+						</div>
+				</div>
+		</section>
+
+{% end %}

@@ -1,0 +1,8 @@
+<html>
+  <head></head>
+  <body>
+    <br>
+      <p>You are now a member of the project {{project.name}} </p>
+      <a href="{{ reverse_url('projects.project.invitation', invitation_key)}}">Accept</a>
+  </body>
+</html>

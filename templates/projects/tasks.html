@@ -1,0 +1,84 @@
+{% extends "../base.html" %}
+  {% block sidebar %}
+  {% if current_user %}
+    <div class="well" style="padding: 8px 0;">
+      <ul class="nav nav-list">
+        <li class="nav-header">List header</li>
+        <li class="active"><a href="{{ reverse_url('projects.organisations') }}"> Organisations</a></li>
+        <li><a href="{{ reverse_url('projects.projects', organisation.slug)}}"> Projects</a></li>
+        <li><a href="{{ reverse_url('projects.tasklists', organisation.slug, project.slug)}}"> Add a new TaskList</a></li>
+
+          <div class="accordion" id="accordion2">
+            <div class="accordion-group">
+              <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                  Existing tasklists
+                </a>
+              </div>
+              <div id="collapseOne" class="accordion-body collapse in">
+                <div class="accordion-inner">
+                {% if tasklists %}
+                 {% for tasklist in tasklists%}
+                  <a href="{{ reverse_url('projects.tasklist', organisation.slug, project.slug, tasklist.sequence) }}">{{tasklist.name}}</a></br>
+                 {%end%}
+                {% else %}
+                  No tasklists are created
+                {% end%}
+                </div>
+              </div>
+            </div>
+          </div>       
+        <li><a href="{{ reverse_url('projects.task.new', organisation.slug, project.slug, tasklist.sequence)}}"> Add a new task</a></li>
+          <div class="accordion" id="accordion2">
+            <div class="accordion-group">
+              <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+                  Existing tasks
+                </a>
+              </div>
+              <div id="collapseTwo" class="accordion-body collapse in">
+                <div class="accordion-inner">
+                {% if tasks %}
+                 {% for task in tasks%}
+                  <a href="{{ reverse_url('projects.task', organisation.slug, project.slug, tasklist.sequence, task.sequence) }}">{{task.title}}</a></br>
+                 {%end%}
+                {% else %}
+                  No tasks are created
+                {% end%}
+                </div>
+              </div>
+            </div>
+          </div> 
+
+
+
+
+
+       <!-- <li><a href="{{ reverse_url('projects.tasks', organisation.slug, project.slug, tasklist.sequence)}}"> All Tasks</a></li> -->
+        <ul>
+        <!-- <li><a href="{{ reverse_url('projects.task.new', organisation.slug, project.slug, tasklist.sequence)}}"> Add new task</a></li> -->
+        </ul>
+      </ul>
+    </div> <!-- /well -->
+  {% end %}
+  {% end %}
+    <!--Body content-->
+  {%block main %}
+    <div class="span9">
+      <div class="">
+    <div class="span9">
+    <div class="">
+      {% if not tasks %}
+        <div class="alert alert-info">
+          <h3> You have not created a task yet!</h3>
+        </div>
+      {% else %}
+          <h2> Your existing Tasks </br>
+          {% for task in tasks %}
+      	  <a href="{{ reverse_url('projects.task', organisation.slug, project.slug, tasklist.sequence, task.sequence) }}"><button>{{task.title}}</button></a>
+      	  {% end %}
+        {% end %}
+
+      </div> 
+    </div><!--/span-->
+  {% end %}

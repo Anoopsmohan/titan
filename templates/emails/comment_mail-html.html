@@ -1,0 +1,13 @@
+<html>
+  <head></head>
+  <body>
+    <br>
+      <p>{{project.name}} </p>
+      <b>Task: <a href="{{ reverse_url('projects.task.comment-email', comment_key)}}">{{task.title}}</a></b></br>
+      <b>{{ assigner }} </b> assigned to  <b>{{user.name}}</b>
+      <h3>Message:</h3>
+        <b>{{message}}</b>
+      </br>
+      
+  </body>
+</html>

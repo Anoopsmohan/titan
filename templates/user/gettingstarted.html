@@ -1,0 +1,111 @@
+{% extends "../base.html" %}
+{% block container%}
+				<!---Left navigation--->
+				<div class="container-fluid">
+						<div class="row-fluid">
+								<div class="span3">
+										<div class="main-left-part-bg">
+												<div class="accordion" id="accordion2">
+														<div class="accordion-group">
+																<div class="accordion-heading"> <a class="accordion-toggle"  href="{{reverse_url('projects.welcome')}}"> Getting Started</a> </div>
+														</div>
+                             {% if organisations %}
+														<div class="accordion-group">
+																<div class="accordion-heading"> <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">Organizations</a> </div>
+																<div id="collapseTwo" class="accordion-body collapse" style="height: 0px; ">
+																		<div class="accordion-inner">
+																				<ul class="nav nav-list">
+                                            {% for org in organisations%}
+																		          <li><a href="{{ reverse_url('projects.organisation', org.slug) }}">{{org.name}}</a></li>
+                                            {% end %}
+
+																				</ul>
+																		</div>
+																</div>
+														</div>
+
+                            {%end%}
+                            <div class="accordion-group">
+                            <div class="accordion-heading"> <a class="accordion-toggle"  href="{{ reverse_url('projects.organisations') }}"> Create Organisation</a> </div>
+                            </div>
+                            <div class="accordion-group">
+                            <div class="accordion-heading"> <a class="accordion-toggle"  href="{{ reverse_url('projects.organisations') }}"> Manage Organisations</a> </div>
+                            </div>
+												</div>										</div>
+										<!---main-left-part-bg--->
+								</div>
+								<!---SPAN-3 END--->
+								
+								<div class="span9">
+										<div id="myCarousel" class="carousel slide">
+												<div class="carousel-inner">
+														<div class="item  active">
+																<div class="container-fluid">
+																<h1>WELCOME TO TEAMBOX!</h1>
+																	<div class="row-fluid">																			
+																			<div class="span6">
+																				<p><strong>A productivity platform that works like you do: virtual, mobile and social.
+																							Teambox is a secure project collaboration platform that streamlines social </strong><br>
+																							communication in a productive, task-driven environment.
+																							Take the tour to find out you can leverage your Teambox experience so that your work feel 
+																							less like work, and more like what you love to do.</p><br><br>
+																							<p>
+																							communication in a productive, task-driven environment.
+																							Take the tour to find out you can leverage your Teambox experience so that your work feel 
+																							less like work, and more like what you love to do.</p>
+																			</div>
+																			<div class="span6"><img src="/static/img/header-2/04_img_01.png"></div>
+																	</div>
+																</div>																
+														</div>
+														
+														
+														<div class="item">
+																<div class="container-fluid">
+																<h1>THE TEAMBOX ENVIRONMENT</h1>
+																	<div class="row-fluid">																			
+																			<div class="span6">
+																				<p><strong>A productivity platform that works like you do: virtual, mobile and social.
+																							Teambox is a secure project collaboration platform that streamlines social </strong><br>
+																							communication in a productive, task-driven environment.
+																							Take the tour to find out you can leverage your Teambox experience so that your work feel 
+																							less like work, and more like what you love to do.</p><br><br>
+																							<p>
+																							communication in a productive, task-driven environment.
+																							Take the tour to find out you can leverage your Teambox experience so that your work feel 
+																							less like work, and more like what you love to do.</p>
+																			</div>
+																			<div class="span6"><img src="/static/img/header-2/1.jpg"></div>
+																	</div>
+																</div>	
+														</div>
+														
+														
+														<div class="item"> 
+															<div class="container-fluid">
+																<h1>ORGANIZATIONS</h1>
+																	<div class="row-fluid">																			
+																			<div class="span6">
+																				<p><strong>A productivity platform that works like you do: virtual, mobile and social.
+																							Teambox is a secure project collaboration platform that streamlines social </strong><br>
+																							communication in a productive, task-driven environment.
+																							Take the tour to find out you can leverage your Teambox experience so that your work feel 
+																							less like work, and more like what you love to do.</p><br><br>
+																							<p>
+																							communication in a productive, task-driven environment.
+																							Take the tour to find out you can leverage your Teambox experience so that your work feel 
+																							less like work, and more like what you love to do.</p>
+																			</div>
+																			<div class="span6"><img src="/static/img/header-2/05_img_01.jpg"></div>
+																	</div>
+																</div>	
+														</div>
+												</div>
+												<a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a> <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a> </div>
+										<div class="clear"></div>
+								</div>
+								<!---SPAN-9 END--->
+						</div>
+				</div>
+		</section>
+{% end %}
